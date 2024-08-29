@@ -2,7 +2,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -27,7 +26,6 @@ func main() {
 		log.Fatalf("Erro ao carregar configuração: %v", err)
 	}
 
-	fmt.Println(cfg)
 	// Conecta ao banco de dados
 
 	db, err := database.ConectarBanco(cfg)

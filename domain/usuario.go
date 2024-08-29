@@ -1,7 +1,6 @@
 package domain
 
 type Usuario struct {
-	ID           int
 	Email        string
 	IDRevendedor int
 }
