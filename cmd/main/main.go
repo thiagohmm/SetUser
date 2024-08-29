@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -21,13 +22,15 @@ func main() {
 	email := os.Args[2]
 
 	// Carrega a configuração
-	_, err := config.LoadConfig(".")
+	cfg, err := config.LoadConfig("../../.env")
 	if err != nil {
 		log.Fatalf("Erro ao carregar configuração: %v", err)
 	}
 
+	fmt.Println(cfg)
 	// Conecta ao banco de dados
-	db, err := database.ConectarBanco()
+
+	db, err := database.ConectarBanco(cfg)
 	if err != nil {
 		log.Fatalf("Erro ao conectar ao banco de dados: %v", err)
 	}
