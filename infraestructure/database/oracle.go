@@ -29,6 +29,11 @@ func ConectarBanco(cfg *config.Conf) (*sql.DB, error) {
 		log.Fatalf("Erro ao abrir a conexão: %v", err)
 	}
 
+	db.SetMaxOpenConns(20)
+	db.SetMaxIdleConns(5)
+	db.SetConnMaxLifetime(0)
+	db.SetConnMaxIdleTime(10)
+
 	// Verificar a conexão
 	ctx := context.Background()
 	if err = db.PingContext(ctx); err != nil {
