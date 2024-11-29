@@ -7,7 +7,7 @@ type UsuarioUseCase struct {
 	UoW domain.UnitOfWork
 }
 
-func (u *UsuarioUseCase) CadastrarUsuario(codigoIBM, email string) error {
+func (u *UsuarioUseCase) CadastrarUsuario(codigoIBM, email string, permissao int) error {
 	err := u.UoW.Begin()
 	if err != nil {
 		return err
@@ -28,6 +28,7 @@ func (u *UsuarioUseCase) CadastrarUsuario(codigoIBM, email string) error {
 	usuario := domain.Usuario{
 		Email:        email,
 		IDRevendedor: idRevendedor,
+		Permissao:    permissao,
 	}
 
 	idUsuario, err := u.UoW.UsuarioRepository().InserirUsuario(usuario)
@@ -36,7 +37,7 @@ func (u *UsuarioUseCase) CadastrarUsuario(codigoIBM, email string) error {
 		return err
 	}
 
-	err = u.UoW.UsuarioRepository().InserirUsuarioAcesso(idUsuario)
+	err = u.UoW.UsuarioRepository().InserirUsuarioAcesso(idUsuario, permissao)
 	if err != nil {
 		u.UoW.Rollback()
 		return err

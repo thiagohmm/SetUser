@@ -4,6 +4,7 @@ package main
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/setUserDb/config"
 	"github.com/setUserDb/infraestructure/database"
@@ -13,12 +14,18 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 3 {
-		log.Fatalf("Uso: %s <codigo_ibm> <email>", os.Args[0])
+
+	if len(os.Args) != 4 {
+		log.Fatalf("Uso: %s <codigo_ibm> %s <email> %s <permissao> \n permissao 0 para revendedor e 1 para Admin", os.Args[1], os.Args[2], os.Args[3])
 	}
 
 	codigoIBM := os.Args[1]
 	email := os.Args[2]
+	permissaoStr := os.Args[3]
+	permissao, err := strconv.Atoi(permissaoStr)
+	if err != nil {
+		log.Fatalf("Erro ao converter permissão: %v", err)
+	}
 
 	// Carrega a configuração
 	cfg, err := config.LoadConfig("../../.env")
@@ -45,5 +52,5 @@ func main() {
 
 	// Cria o handler e executa a ação
 	handler := cli.NovoUsuarioHandler(usuarioUseCase)
-	handler.CadastrarUsuarioCLI(codigoIBM, email)
+	handler.CadastrarUsuarioCLI(codigoIBM, email, permissao)
 }

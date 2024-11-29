@@ -16,9 +16,9 @@ func NovoUsuarioHandler(u *usecase.UsuarioUseCase) *UsuarioHandler {
 	return &UsuarioHandler{UsuarioUseCase: u}
 }
 
-func (h *UsuarioHandler) CadastrarUsuarioCLI(codigoIBM, email string) {
+func (h *UsuarioHandler) CadastrarUsuarioCLI(codigoIBM, email string, permissao int) {
 
-	err := h.UsuarioUseCase.CadastrarUsuario(codigoIBM, email)
+	err := h.UsuarioUseCase.CadastrarUsuario(codigoIBM, email, permissao)
 	if err != nil {
 		log.Fatalf("Erro ao cadastrar usuário: %v", err)
 	}

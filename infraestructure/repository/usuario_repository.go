@@ -56,14 +56,28 @@ func (r *UsuarioRepositoryOracleTx) InserirUsuario(usuario domain.Usuario) (int,
 }
 
 // InserirUsuarioAcesso insere um novo acesso de usuário na tabela usuario_acessos.
-func (r *UsuarioRepositoryOracleTx) InserirUsuarioAcesso(idUsuario int) error {
-	insertSQL := `
+func (r *UsuarioRepositoryOracleTx) InserirUsuarioAcesso(idUsuario int, permissao int) error {
+	var insertSQL string
+
+	if permissao == 0 {
+
+		insertSQL = `
         INSERT INTO usuario_acessos (
             IDTIPOUSUARIO, IDUSUARIO, ATIVO, DATACRIACAO, DATAALTERACAO
         ) VALUES (
             2, :1, '1', SYSDATE, SYSDATE
         )
     `
+	} else {
+		insertSQL = `
+        INSERT INTO usuario_acessos (
+            IDTIPOUSUARIO, IDUSUARIO, ATIVO, DATACRIACAO, DATAALTERACAO
+        ) VALUES (
+            1, :1, '1', SYSDATE, SYSDATE
+        )
+    `
+	}
+
 	stmt, err := r.tx.Prepare(insertSQL)
 	if err != nil {
 		return err
